@@ -1,0 +1,12 @@
+body {
+    background-color: #f4f7fc;
+}
+.dashboard-section {
+    margin-top: 30px;
+}
+.table th, .table td {
+    vertical-align: middle;
+}
+.list-group-item {
+    background-color: #f8f9fa;
+}

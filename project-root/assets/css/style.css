@@ -1,0 +1,39 @@
+/* Define initial state of the element (before it's in view) */
+.animate-scroll {
+    opacity: 0;
+    transform: translateY(50px); /* Adjust as needed */
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+/* Define the final state when it comes into view */
+.animate-scroll-in-view {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* logo hover */
+.navbar-brand:hover .logo-safe {
+    color: #c1703d; 
+}
+
+.navbar-brand:hover .logo-support {
+    color: #e3b766; 
+}
+
+
+/* underline hover in header */
+.nav-link {
+    position: relative;
+    transition: color 0.3s ease, text-decoration 0.3s ease;
+
+}
+.navbar-nav .nav-link:hover {
+    color: #e3b766 !important;
+    text-decoration: underline;
+}
+
+/* hover in dropdown icon */
+.dropdown-item:hover {
+    color: #e3b766 !important;
+    text-decoration: underline !important;
+}
