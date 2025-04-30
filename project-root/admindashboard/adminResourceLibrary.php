@@ -33,6 +33,7 @@ $resources = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <title>Mental Health Resources</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="../assets/css/resourcelibrary.css">
 </head>
 <body>
 
@@ -50,10 +51,18 @@ $resources = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <!-- Filter Buttons -->
     <div class="btn-group mb-4" role="group">
-        <button type="button" class="btn btn-primary" onclick="filterResources('all')">All</button>
-        <button type="button" class="btn btn-secondary" onclick="filterResources('article')">Articles</button>
-        <button type="button" class="btn btn-secondary" onclick="filterResources('video')">Videos</button>
-        <button type="button" class="btn btn-secondary" onclick="filterResources('tool')">Self-Help Tools</button>
+        <button type="button" class="btn filter-btn active" data-type="all" 
+                style="background-color: #e3b766; color: white;" 
+                onclick="filterResources('all')">All</button>
+        <button type="button" class="btn filter-btn" data-type="article" 
+                style="background-color: #e3b766; color: white;" 
+                onclick="filterResources('article')">Articles</button>
+        <button type="button" class="btn filter-btn" data-type="video" 
+                style="background-color: #e3b766; color: white;" 
+                onclick="filterResources('video')">Videos</button>
+        <button type="button" class="btn filter-btn" data-type="tool" 
+                style="background-color: #e3b766; color: white;" 
+                onclick="filterResources('tool')">Self-Help Tools</button>
     </div>
 
     <!-- Resource Cards -->
@@ -61,20 +70,23 @@ $resources = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <?php foreach ($resources as $resource): ?>
             <div class="col-lg-4 col-md-6 col-sm-12 mb-4 resource-card" data-type="<?php echo htmlspecialchars($resource['type']); ?>">
                 <div class="card h-100">
-                    <div class="card-body">
+                    <div class="card-body d-flex flex-column">
+                        <?php if ($resource['type'] === 'video'): ?>
+                            <div class="video-thumbnail mb-3">
+                                <img src="" 
+                                     data-video-url="<?php echo htmlspecialchars($resource['link']); ?>" 
+                                     class="card-img-top video-thumb" 
+                                     alt="Video thumbnail">
+                            </div>
+                        <?php endif; ?>
                         <h5 class="card-title"><?php echo htmlspecialchars($resource['title']); ?></h5>
                         <p class="card-text"><strong>Type:</strong> <?php echo htmlspecialchars($resource['type']); ?></p>
-
-                        <!-- Truncated description -->
-                        <p class="card-text truncated-description">
-                            <?php echo substr(htmlspecialchars($resource['description']), 0, 100); ?>... 
-                            <a href="javascript:void(0)" onclick="toggleDescription(this)">Show more</a>
-                        </p>
-
-                        <!-- Full description -->
-                        <p class="card-text full-description" style="display:none;"><?php echo htmlspecialchars($resource['description']); ?></p>
-
-                        <a href="<?php echo htmlspecialchars($resource['link']); ?>" class="btn btn-primary" target="_blank">Learn more</a>
+                        <div class="description-container">
+                            <p class="card-text description"><?php echo htmlspecialchars($resource['description']); ?></p>
+                            <div class="fade-overlay"></div>
+                        </div>
+                        <button onclick="showDescription('<?php echo htmlspecialchars(addslashes($resource['title'])); ?>', '<?php echo htmlspecialchars(addslashes($resource['description'])); ?>')" class="btn btn-link mt-2 p-0 text-primary">Read More</button>
+                        <a href="<?php echo htmlspecialchars($resource['link']); ?>" class="btn btn-primary mt-auto text-white" target="_blank">Learn more</a>
                     </div>
                 </div>
             </div>
@@ -124,41 +136,27 @@ $resources = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </div>
 </div>
 
+<!-- Description Modal -->
+<div class="modal fade" id="descriptionModal" tabindex="-1" role="dialog" aria-labelledby="descriptionModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="descriptionModalLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="modalDescription"></p>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Bootstrap JS and jQuery -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-<script>
-    // Function to filter resources by type
-    function filterResources(type) {
-        const cards = document.querySelectorAll('.resource-card');
-        cards.forEach(card => {
-            if (type === 'all' || card.getAttribute('data-type') === type) {
-                card.style.display = "block"; // Show the card
-            } else {
-                card.style.display = "none"; // Hide the card
-            }
-        });
-    }
-
-    // Function to toggle the description visibility
-    function toggleDescription(button) {
-        const fullDescription = button.previousElementSibling.nextElementSibling;
-        const truncatedDescription = button.previousElementSibling;
-        
-        // Toggle between showing and hiding
-        if (fullDescription.style.display === "none") {
-            fullDescription.style.display = "inline";
-            truncatedDescription.style.display = "none";
-            button.innerHTML = "Show less";
-        } else {
-            fullDescription.style.display = "none";
-            truncatedDescription.style.display = "inline";
-            button.innerHTML = "Show more";
-        }
-    }
-</script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../assets/js/resourcelibrary.js"></script>
 
 </body>
 </html>

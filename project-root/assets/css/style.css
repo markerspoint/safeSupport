@@ -1,3 +1,8 @@
+/* css */
+
+@import "../../node_modules/bootstrap/dist/css/bootstrap.min.css";
+
+
 /* Define initial state of the element (before it's in view) */
 .animate-scroll {
     opacity: 0;

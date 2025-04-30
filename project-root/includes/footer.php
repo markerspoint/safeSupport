@@ -1,7 +1,7 @@
 <!-- footer.php -->
 </main>
 <footer class="py-5 mt-auto bg-dark text-light">
-    <div class="container">
+    <div class="container text-center">
         <div class="row g-4">
             <!-- First Column (SafeSupport) -->
             <div class="col-lg-3">
@@ -47,6 +47,39 @@
                 </div>
             </div>
         </div>
+
+
+
+        <!-- <div class="conatainer">
+            <div class="row text-center">
+                <div class="col">
+                    <p>
+                        <span>Programmer</span> <br>
+                        <span class="text-secondary">Mark Ian D. Dela Cruz</span>
+                    </p>
+                </div>
+                <div class="col">
+                    <p>
+                        <span>Analytical Writer</span> <br>
+                        <span class="text-secondary">Mark Ian D. Dela Cruz</span>
+                    </p>
+                </div>
+                <div class="col">
+                    <p>
+                        <span>Quality and Assurance</span> <br>
+                        <span class="text-secondary">Mark Ian D. Dela Cruz</span>
+                    </p>
+                </div>
+                <div class="col">
+                    <p>
+                        <span>Project Manager</span> <br>
+                        <span class="text-secondary">Mark Ian D. Dela Cruz</span>
+                    </p>
+                </div>
+            </div>
+        </div> -->
+
+
 
         <!-- Divider -->
         <hr class="my-4 border-secondary">

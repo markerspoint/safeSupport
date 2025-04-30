@@ -1,0 +1,152 @@
+/* Sidebar base styles */
+#wrapper {
+    display: flex;
+}
+
+/* sidebar-title */
+.sidebar-title {
+    display: flex;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar-title p {
+    color: #e3b766;
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    font-weight: 300;
+    font-style: italic;
+    padding: 0;
+    margin: 0 1.5rem;
+}
+
+#sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    width: 240px;
+    background: #043826;
+    color: #fff;
+    transition: width 0.3s;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.08);
+    z-index: 1000;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+#sidebar .d-flex {
+    align-items: center;
+    padding: 20px 16px;
+}
+
+#toggle-btn {
+    background: none;
+    border: none;
+    color: #e3b766;
+    font-size: 1.8rem;
+    cursor: pointer;
+    margin-right: 12px;
+    transition: color 0.2s;
+}
+
+#toggle-btn:hover {
+    color: #fff;
+}
+
+.sidebar-logo a {
+    color: #e3b766;
+    font-size: 1.4rem;
+    font-weight: bold;
+    text-decoration: none;
+    letter-spacing: 1px;
+}
+
+.sidebar-nav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex: 1;
+}
+
+.sidebar-item {
+    margin: 8px 0;
+}
+
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    color: #fff;
+    text-decoration: none;
+    padding: 12px 24px;
+    border-radius: 6px;
+    transition: background 0.2s, color 0.2s;
+    font-size: 1rem;
+    gap: 10px;
+}
+
+.sidebar-link:hover, .sidebar-link.active {
+    background: #e3b766;
+    color: #043826;
+}
+
+.sidebar-link i {
+    font-size: 1.3rem;
+    min-width: 24px;
+}
+
+#sidebar.expand {
+    width: 70px;
+}
+
+#sidebar.expand .sidebar-logo a,
+#sidebar.expand .sidebar-link span {
+    display: none;
+}
+
+#sidebar.expand .sidebar-link {
+    justify-content: center;
+    padding: 12px 0;
+}
+
+/* Hide sidebar-title when sidebar is collapsed */
+#sidebar.expand .sidebar-title {
+    display: none;
+}
+
+/* Hide sidebar-title when sidebar is collapsed */
+#sidebar.expand hr {
+    display: none;
+}
+
+#sidebar.expand .sidebar-link i {
+    margin: 0;
+}
+
+main {
+    margin-left: 240px;
+    transition: margin-left 0.3s;
+    padding: 24px;
+}
+
+#sidebar.expand ~ main {
+    margin-left: 70px;
+}
+
+/* Responsive for small screens */
+@media (max-width: 768px) {
+    #sidebar {
+        width: 70px;
+    }
+    #sidebar:not(.expand) {
+        width: 240px;
+    }
+    main {
+        margin-left: 70px;
+    }
+    #sidebar:not(.expand) ~ main {
+        margin-left: 240px;
+    }
+}

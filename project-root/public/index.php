@@ -1,54 +1,78 @@
 <?php include('../includes/header.php'); ?>
 
-<main class="bg-light">
+<main style="background: #ffffff;">
+    
 
 <!-- Hero Section -->
-<section class="position-relative py-5" style="background:rgb(227, 228, 235);">
-    <div class="container d-flex align-items-center">
-        <!-- Text Section (Left) -->
-        <div class="text-center text-white w-100 w-md-6 animate-scroll">
-            <h1 class="display-4 fw-semibold mb-4" style="color: #e3b766;">Welcome to SafeSupport</h1>
-            <p class="fs-4 mb-4" style="color: #333333;">We provide a reliable scheduling system for counseling services, making it easier for you to connect with the right support.</p>
-            <p class="fs-5 fst-italic" style="color: #e3b766;">"SafeSupport: We Listen at Your Concern"</p>
-            <a href="../public/register.php" class="btn" 
-                style="background-color: #e3b766; color: #fff; transition: transform 0.3s ease, background-color 0.3s ease;"
-                onmouseover="this.style.transform='scale(1.1)'; this.style.backgroundColor='#c1703d';"
-                onmouseout="this.style.transform='scale(1)'; this.style.backgroundColor='#e3b766';">
-                Get Started
-            </a>
-        </div>
-        
-        <!-- Image Section (Right) -->
-        <div class="w-100 w-md-6 animate-scroll">
-            <img src="../images/herosection.png" alt="Hero Section Image" class="img-fluid">
+<section class="py-5 min-vh-100 d-flex align-items-center" style="background: #ffffff;">
+    <div class="hero-container">
+        <div class="row align-items-center justify-content-center">
+            <div class="col-md-6 text-center text-md-start">
+                <h1 class="display-3 fw-bold mb-4 animate-scroll" style="color: #333333;">
+                    Welcome to <span style="color: #0b6043;">Safe</span>Support
+                </h1>
+                <p class="lead mb-5 animate-scroll" style="color: #666666; font-size: clamp(1rem, 5vw, 1.5rem); line-height: 1.6;">
+                    Your trusted platform for scheduling counseling services and mental health support.
+                </p>
+                <div class="d-flex gap-3 justify-content-center justify-content-md-start animate-scroll">
+                    <a href="../public/login.php" class="btn btn-lg px-5 py-3" 
+                        style="background-color: #0b6043; color: #fff; transition: all 0.3s ease; font-size: 1.2rem;"
+                        onmouseover="this.style.backgroundColor='#022116';"
+                        onmouseout="this.style.backgroundColor='#0b6043';">
+                        Get Started
+                    </a>
+                    <a href="#HowItWorks" class="btn btn-lg btn-outline-secondary px-5 py-3" style="font-size: 1.2rem;">
+                        Learn More
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="img-mhs p-4 text-center animate-scroll">
+                    <img src="../images/mentalhealth.png" alt="Mental Health Support" class="img-fluid" 
+                        style="max-width: 100%; height: auto;">
+                </div>
+            </div>
         </div>
     </div>
 </section>
 
 
+<!-- Announcement section -->
+<!-- make the announcement in different page make
+ it only accessible into the navbar -->
 
 
 <!-- About Us Section -->
-<section class="py-5" style="background:rgb(227, 228, 235); padding-left: 0; padding-right: 0;">
-    <h2 class="text-center display-5 fw-semibold text-dark animate-scroll" style="margin-bottom: 30px;">About SafeSupport</h2>
+<section class="py-5" style="background: #ffffff; padding-left: 0; padding-right: 0;">
+    <h2 class="text-center display-5 fw-bold text-dark animate-scroll" style="margin-bottom: 30px;">
+        <span style="color: #333333;">About </span><span style="color: #0b6043;">Safe</span><span style="color: #333333;">Support</span>
+    </h2>
     <div class="container text-center">
         <div class="row g-4 justify-content-center">
-            <div class="col-md-4 animate-scroll">
-                <div class="card shadow-lg p-4" style="transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)';" onmouseout="this.style.transform='scale(1)';">
-                    <img src="../images/counseling.png" class="card-img-top rounded mb-3" alt="Counseling Image">
-                    <p class="fs-5 text-dark">At SafeSupport, we offer an intuitive scheduling system for counseling services, allowing you to book sessions at your convenience.</p>
+            <!-- First Card -->
+            <div class="col-md-4 animate-scroll"> <!-- Changed from col-md-3 to col-md-4 -->
+                <div class="card shadow-lg p-4" style="transition: transform 0.3s ease; max-height: 60vh;" onmouseover="this.style.transform='scale(1.05)';" onmouseout="this.style.transform='scale(1)';">
+                    <img src="../images/counseling.png" class="card-img-top rounded mb-3" alt="Online Counseling Scheduling System" style="height: 160px; object-fit: contain;">
+                    <p class="fs-6 text-dark">At SafeSupport, we offer an intuitive scheduling system for counseling services, allowing you to book sessions at your convenience.</p>
                 </div>
             </div>
+            <!-- Second Card -->
             <div class="col-md-4 animate-scroll">
-                <div class="card shadow-lg p-4" style="transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)';" onmouseout="this.style.transform='scale(1)';">
-                    <img src="../images/therapist.png" class="card-img-top rounded mb-3" alt="Therapist Image">
-                    <p class="fs-5 text-dark">We connect you with professionals for therapy, mental health support, or career guidance, ensuring help is just a few clicks away.</p>
+                <div class="card shadow-lg p-4" style="transition: transform 0.3s ease; max-height: 60vh;" onmouseover="this.style.transform='scale(1.05)';" onmouseout="this.style.transform='scale(1)';">
+                    <img src="../images/therapist.png" class="card-img-top rounded mb-3" alt="Professional Mental Health Support" style="height: 160px; object-fit: contain;">
+                    <p class="fs-6 text-dark">We connect you with professionals for therapy, mental health support, or career guidance, ensuring help is just a few clicks away.</p>
                 </div>
             </div>
+            <!-- Third Card -->
             <div class="col-md-4 animate-scroll">
-                <div class="card shadow-lg p-4" style="transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)';" onmouseout="this.style.transform='scale(1)';">
-                    <img src="../images/support.png" class="card-img-top rounded mb-3" alt="Support Image">
-                    <a href="/services" class="btn" style="background-color: #e3b766; color: #fff;">Learn More About Our Services</a>
+                <div class="card shadow-lg p-4" style="transition: transform 0.3s ease; max-height: vh;" onmouseover="this.style.transform='scale(1.05)';" onmouseout="this.style.transform='scale(1)';">
+                    <img src="../images/support.png" class="card-img-top rounded mb-3" alt="24/7 Mental Health Support Services" style="height: 160px; object-fit: contain;">
+                    <a href="/services" class="btn mt-3" 
+                        style="background-color: #0b6043; color: #fff; transition: transform 0.3s ease, background-color 0.3s ease;"
+                        onmouseover="this.style.transform='scale(1.1)'; this.style.backgroundColor='#c1703d';"
+                        onmouseout="this.style.transform='scale(1)'; this.style.backgroundColor='#0b6043';">
+                        Learn More About Our Services
+                    </a>
                 </div>
             </div>
         </div>
@@ -56,9 +80,9 @@
 </section>
 
 <!-- How It Works Section -->
-<section class="py-5" style="background:rgb(227, 228, 235); transition: background 0.5s ease-in-out;">
+<section id="HowItWorks" class="py-5" style="background: #ffffff; transition: background 0.5s ease-in-out;">
     <div class="container text-center">
-        <h2 class="display-5 fw-semibold text-dark animate-scroll" style="margin-bottom: 30px;">How SafeSupport Works</h2>
+        <h2 class="display-5 fw-bold text-dark animate-scroll" style="margin-bottom: 30px;">How <span style="color: #0b6043;">Safe</span>Support Works</h2>
         <div class="row g-4">
             <div class="col-md-4 animate-scroll">
                 <div class="card shadow-lg p-4" style="transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)';" onmouseout="this.style.transform='scale(1)';">
@@ -83,16 +107,16 @@
             </div>
         </div>
     </div>
-</section>
+</section> 
 
 <!-- Call to Action Section -->
-<section style="background-color: #e3b766; color: white;" class="py-5 text-center">
-    <h2 class="display-5 fw-semibold animate-scroll" style="color: #333333;">Ready to Get Started?</h2>
-    <p class="fs-4 animate-scroll animate__delay-1s" style="color: #333333;">Scheduling your first counseling session with SafeSupport is just a few steps away.</p>
-    <a href="/register" class="btn animate-scroll animate__delay-2s" 
-        style="background-color: #ff7f50; color: #333333; transition: transform 0.3s ease, background-color 0.3s ease;"
-        onmouseover="this.style.transform='scale(1.1)'; this.style.backgroundColor='#c1703d'; this.style.color='#fff';"
-        onmouseout="this.style.transform='scale(1)'; this.style.backgroundColor='#ff7f50'; this.style.color='#333333';">
+<section style="background-color: #0b6043; color: white;" class="py-5 text-center">
+    <h2 class="display-5 fw-semibold animate-scroll" style="color: #ffffff;">Ready to Get Started?</h2>
+    <p class="fs-4 animate-scroll animate__delay-1s" style="color: #ffffff;">Scheduling your first counseling session with SafeSupport is just a few steps away.</p>
+    <a href="../public/register.php" class="btn animate-scroll animate__delay-2s" 
+        style="background-color:#98f1d2; color: #333333; transition: transform 0.3s ease, background-color 0.3s ease;"
+        onmouseover="this.style.transform='scale(1.1)'; this.style.backgroundColor='#98f1d2'; this.style.color='#fff';"
+        onmouseout="this.style.transform='scale(1)'; this.style.backgroundColor='#98f1d2'; this.style.color='#333333';">
         Register Now
     </a>
 </section>
@@ -100,3 +124,5 @@
 </main>
 
 <?php include('../includes/footer.php'); ?>
+<script src="../assets/js/index.js"></script>
+

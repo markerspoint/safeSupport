@@ -62,16 +62,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // If no errors, proceed with checking credentials
     if (empty($emailErr) && empty($passwordErr)) {
         try {
-            // Get PDO connection
             $pdo = getDb(); // Get the PDO connection from config.php
 
-            // First, check for the user in the 'users' table (for students)
+            // First, check if the user exists in the students table (users)
             $sql = "SELECT id, email, password FROM users WHERE email = :email LIMIT 1";
             $stmt = $pdo->prepare($sql);
             $stmt->execute(['email' => $email]);
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            // If not found in users, check the counselors table (for administrators)
+            // If not found in users, check the counselors table (for admins)
             if (!$user) {
                 $sql = "SELECT id, email, password FROM counselors WHERE email = :email LIMIT 1";
                 $stmt = $pdo->prepare($sql);
@@ -84,17 +83,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['user_email'] = $user['email'];
 
-                // Remember me functionality (optional: use cookies to remember user)
+                // Remember me functionality
                 if ($remember) {
                     setcookie('user_email', $email, time() + (86400 * 30), "/"); // 30 days
                     setcookie('user_password', $password, time() + (86400 * 30), "/"); // 30 days
                 }
 
-                // Redirect to appropriate dashboard based on user type
-                if ($user['email'] === $email) { // Check if it's a match with the student's email
-                    header("Location: ../dashboard/indexdashboard.php");
-                } else {
-                    header("Location: ../admindashboard/adminindex.php");
+                // Determine the role based on where the user was found (users = student, counselors = admin)
+                if ($stmt->queryString == "SELECT id, email, password FROM users WHERE email = :email LIMIT 1") {
+                    // If the user is found in the students (users) table
+                    header("Location: ../studentdashboard/indexdashboard.php");
+                } elseif ($stmt->queryString == "SELECT id, email, password FROM counselors WHERE email = :email LIMIT 1") {
+                    // If the user is found in the counselors (admin) table
+                    header("Location: ../admindashboard/adminIndex.php");
                 }
                 exit;
             } else {
@@ -145,7 +146,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="tab-content" id="roleTabContent">
                     <div class="tab-pane fade show active" id="student" role="tabpanel" aria-labelledby="student-tab">
                         <form method="POST" action="">
-                            <input type="hidden" name="role" value="student">
                             <!-- Email -->
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email</label>
@@ -176,7 +176,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </div>
                     <div class="tab-pane fade" id="admin" role="tabpanel" aria-labelledby="admin-tab">
                         <form method="POST" action="">
-                            <input type="hidden" name="role" value="admin">
                             <!-- Email -->
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email</label>

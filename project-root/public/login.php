@@ -1,220 +1,131 @@
 <?php
-// Start the session
 session_start();
+require_once('../includes/db.php');
 
-// Include database connection (replace with your actual path)
-include('../config/config.php');
-
-// Initialize error variables
-$emailErr = $passwordErr = $loginErr = '';
-
-// Check if the user is already logged in via session or cookies
+// Check if user is already logged in
 if (isset($_SESSION['user_id'])) {
-    header("Location: ../dashboard/indexdashboard.php");
+    // Redirect based on role
+    header("Location: " . ($_SESSION['role'] === 'counselor' ? '../admindashboard/adminIndex.php' : '../studentdashboard/indexdashboard.php'));
     exit();
-} elseif (!empty($_COOKIE['user_email']) && !empty($_COOKIE['user_password'])) {
-    // Debugging: Check if cookies are actually received
-    error_log("Cookies detected: " . $_COOKIE['user_email']);
-
+} 
+// Check for remember me cookies
+elseif (!empty($_COOKIE['user_email']) && !empty($_COOKIE['user_password'])) {
     $pdo = getDb();
-    $sql = "SELECT id, email, password FROM users WHERE email = :email LIMIT 1";
+    // Modified query to include role
+    $sql = "SELECT id, email, password, role FROM users WHERE email = :email LIMIT 1";
     $stmt = $pdo->prepare($sql);
     $stmt->execute(['email' => $_COOKIE['user_email']]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($user && password_verify($_COOKIE['user_password'], $user['password'])) {
+        // Set session variables including role
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['user_email'] = $user['email'];
+        $_SESSION['role'] = $user['role'];
 
-        header("Location: ../dashboard/indexdashboard.php");
+        // Redirect based on role
+        header("Location: " . ($user['role'] === 'counselor' ? '../admindashboard/adminIndex.php' : '../dashboard/indexdashboard.php'));
         exit();
     } else {
-        // If cookies are invalid, delete them and redirect to login
+        // Clear invalid cookies
         setcookie('user_email', '', time() - 3600, "/");
         setcookie('user_password', '', time() - 3600, "/");
         unset($_COOKIE['user_email']);
         unset($_COOKIE['user_password']);
-
-        error_log("Invalid cookies deleted. Redirecting to login.");
-        header("Location: login.php");
-        exit();
-    }
-}
-
-// Handle the form submission
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Sanitize input and validate
-    $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
-    $password = $_POST['password'];
-    $remember = isset($_POST['remember']) ? true : false;
-
-    // Basic validation
-    if (empty($email)) {
-        $emailErr = "Email is required";
-    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $emailErr = "Invalid email format";
-    }
-
-    if (empty($password)) {
-        $passwordErr = "Password is required";
-    }
-
-    // If no errors, proceed with checking credentials
-    if (empty($emailErr) && empty($passwordErr)) {
-        try {
-            $pdo = getDb(); // Get the PDO connection from config.php
-
-            // First, check if the user exists in the students table (users)
-            $sql = "SELECT id, email, password FROM users WHERE email = :email LIMIT 1";
-            $stmt = $pdo->prepare($sql);
-            $stmt->execute(['email' => $email]);
-            $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            // If not found in users, check the counselors table (for admins)
-            if (!$user) {
-                $sql = "SELECT id, email, password FROM counselors WHERE email = :email LIMIT 1";
-                $stmt = $pdo->prepare($sql);
-                $stmt->execute(['email' => $email]);
-                $user = $stmt->fetch(PDO::FETCH_ASSOC);
-            }
-
-            if ($user && password_verify($password, $user['password'])) {
-                // Password is correct, start session and redirect
-                $_SESSION['user_id'] = $user['id'];
-                $_SESSION['user_email'] = $user['email'];
-
-                // Remember me functionality
-                if ($remember) {
-                    setcookie('user_email', $email, time() + (86400 * 30), "/"); // 30 days
-                    setcookie('user_password', $password, time() + (86400 * 30), "/"); // 30 days
-                }
-
-                // Determine the role based on where the user was found (users = student, counselors = admin)
-                if ($stmt->queryString == "SELECT id, email, password FROM users WHERE email = :email LIMIT 1") {
-                    // If the user is found in the students (users) table
-                    header("Location: ../studentdashboard/indexdashboard.php");
-                } elseif ($stmt->queryString == "SELECT id, email, password FROM counselors WHERE email = :email LIMIT 1") {
-                    // If the user is found in the counselors (admin) table
-                    header("Location: ../admindashboard/adminIndex.php");
-                }
-                exit;
-            } else {
-                $loginErr = "Invalid credentials. Please try again.";
-            }
-        } catch (PDOException $e) {
-            $loginErr = "Database error: " . $e->getMessage();
-        }
     }
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - SafeSupport</title>
 
-    <!-- Add Bootstrap 5 CSS -->
+    <!-- Bootstrap 5.3.0 CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="../assets/css/login.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
 </head>
-
-<body class="bg-light"> <!-- Light Beige/Wheat background for the page -->
-
-    <div class="d-flex justify-content-center align-items-center vh-100">
-        <div class="card shadow-lg" style="width: 400px;">
-            <div class="card-body">
-                <h2 class="text-center mb-4" style="color: #333333;">Login to SafeSupport</h2>
-                <?php if ($loginErr) { ?>
-                    <div class="alert alert-danger" role="alert">
-                        <?php echo $loginErr; ?>
-                    </div>
-                <?php } ?>
-
-                <!-- Tab Navigation -->
-                <ul class="nav nav-tabs mb-3" id="roleTab" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="student-tab" data-bs-toggle="tab" data-bs-target="#student" type="button" role="tab" aria-controls="student" aria-selected="true">Student</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="admin-tab" data-bs-toggle="tab" data-bs-target="#admin" type="button" role="tab" aria-controls="admin" aria-selected="false">Administrator</button>
-                    </li>
-                </ul>
-
-                <!-- Tab Content -->
-                <div class="tab-content" id="roleTabContent">
-                    <div class="tab-pane fade show active" id="student" role="tabpanel" aria-labelledby="student-tab">
-                        <form method="POST" action="">
-                            <!-- Email -->
+<body class="bg-light">
+    <div class="loading-spinner">
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+    <div class="container min-vh-100 d-flex align-items-center justify-content-center">
+        <div class="card shadow-sm" style="width: 700px; border-color: #e3b766;">
+            <div class="row g-0">
+                <div class="col-md-6">
+                    <div class="card-body p-3">
+                        <a href="index.php" class="text-decoration-none position-absolute" style="left: 15px; top: 15px;">
+                            <i class="fas fa-arrow-left" style="color: #e3b766; font-size: 20px;"></i>
+                        </a>
+                        <h2 class="text-center mb-3" style="color: #e3b766; font-size: 1.5rem;">Login to SafeSupport</h2>
+                        
+                        <?php if (isset($_SESSION['error'])): ?>
+                            <div class="alert alert-danger py-2 mb-2 small">
+                                <?php 
+                                echo $_SESSION['error'];
+                                unset($_SESSION['error']);
+                                ?>
+                            </div>
+                        <?php endif; ?>
+                        
+                        <form action="process_login.php" method="POST">
+                            <div class="mb-2">
+                                <label for="email" class="form-label small mb-1" style="color: #e3b766;">Email</label>
+                                <input type="email" class="form-control form-control-sm border-2" id="email" name="email" required 
+                                       style="border-color: #e3b766;">
+                            </div>
+                            <div class="mb-2">
+                                <label for="password" class="form-label small mb-1" style="color: #e3b766;">Password</label>
+                                <input type="password" class="form-control form-control-sm border-2" id="password" name="password" required
+                                       style="border-color: #e3b766;">
+                            </div>
                             <div class="mb-3">
-                                <label for="email" class="form-label">Email</label>
-                                <input type="email" name="email" id="email" class="form-control" value="<?php echo isset($email) ? $email : ''; ?>" required>
-                                <?php if ($emailErr) { ?>
-                                    <div class="text-danger small"> <?php echo $emailErr; ?> </div>
-                                <?php } ?>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="remember" name="remember"
+                                           style="border-color: #e3b766; background-color: #ffffff !important;"
+                                           onchange="this.style.backgroundColor = this.checked ? '#e3b766' : '#ffffff'">
+                                    <label class="form-check-label small" for="remember">Remember me</label>
+                                </div>
                             </div>
-
-                            <!-- Password -->
-                            <div class="mb-3">
-                                <label for="password" class="form-label">Password</label>
-                                <input type="password" name="password" id="password" class="form-control" required>
-                                <?php if ($passwordErr) { ?>
-                                    <div class="text-danger small"> <?php echo $passwordErr; ?> </div>
-                                <?php } ?>
-                            </div>
-
-                            <!-- Remember Me -->
-                            <div class="form-check mb-3">
-                                <input type="checkbox" name="remember" id="remember" class="form-check-input">
-                                <label for="remember" class="form-check-label">Remember Me</label>
-                            </div>
-
-                            <!-- Submit Button -->
-                            <button type="submit" class="btn w-100" style="background-color: #c1703d; color: white;">Login</button>
+                            <button type="submit" class="btn btn-sm w-100 text-white" 
+                                    style="background-color: #e3b766; border: none; transition: transform 0.2s;"
+                                    onmouseover="this.style.transform='scale(1.05)'" 
+                                    onmouseout="this.style.transform='scale(1)'">Login</button>
                         </form>
-                    </div>
-                    <div class="tab-pane fade" id="admin" role="tabpanel" aria-labelledby="admin-tab">
-                        <form method="POST" action="">
-                            <!-- Email -->
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Email</label>
-                                <input type="email" name="email" id="email" class="form-control" value="<?php echo isset($email) ? $email : ''; ?>" required>
-                                <?php if ($emailErr) { ?>
-                                    <div class="text-danger small"> <?php echo $emailErr; ?> </div>
-                                <?php } ?>
-                            </div>
-
-                            <!-- Password -->
-                            <div class="mb-3">
-                                <label for="password" class="form-label">Password</label>
-                                <input type="password" name="password" id="password" class="form-control" required>
-                                <?php if ($passwordErr) { ?>
-                                    <div class="text-danger small"> <?php echo $passwordErr; ?> </div>
-                                <?php } ?>
-                            </div>
-
-                            <!-- Remember Me -->
-                            <div class="form-check mb-3">
-                                <input type="checkbox" name="remember" id="remember" class="form-check-input">
-                                <label for="remember" class="form-check-label">Remember Me</label>
-                            </div>
-
-                            <!-- Submit Button -->
-                            <button type="submit" class="btn w-100" style="background-color: #c1703d; color: white;">Login</button>
-                        </form>
+                        
+                        <div class="text-center mt-2">
+                            <small>
+                                <a href="register.php" class="text-decoration-none d-block mb-1" 
+                                   style="transition: transform 0.2s;"
+                                   onmouseover="this.style.transform='scale(1.05)'" 
+                                   onmouseout="this.style.transform='scale(1)'">
+                                   <span style="color: #333333;">Don't have an account?</span>
+                                   <span style="color: #e3b766;">Register</span>
+                                </a>
+                                <a href="forgot_password.php" class="text-decoration-none" style="color: #e3b766;">
+                                    <span style="display: inline-block; transition: transform 0.2s;"
+                                          onmouseover="this.style.transform='scale(1.05)'" 
+                                          onmouseout="this.style.transform='scale(1)'">Forgot Password?</span>
+                                </a>
+                            </small>
+                        </div>
                     </div>
                 </div>
-
-                <!-- Register Link -->
-                <div class="text-center mt-3">
-                    <p class="text-muted">Don't have an account? <a href="../public/register.php" class="text-decoration-none" style="color: #c1703d;">Register</a></p>
+                <div class="col-md-6 d-flex align-items-center justify-content-center">
+                    <img src="../images/login.png" alt="Login Image" class="img-fluid p-3" style="max-height: 300px; object-fit: contain;">
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/login.js"></script>
 </body>
 </html>

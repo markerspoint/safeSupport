@@ -67,25 +67,50 @@ if (isset($_POST['delete_selected'])) {
     exit();
 }
 
-// Fetch appointments
-$appointmentQuery = $pdo->query("SELECT a.id, a.appointment_time, a.reason, c.name AS counselor_name, u.name AS student_name, a.status, a.notes 
+// Pagination settings
+$records_per_page = 5;
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$offset = ($page - 1) * $records_per_page;
+
+// Count total appointments for pagination
+$total_query = $pdo->query("SELECT COUNT(*) FROM appointments");
+$total_appointments = $total_query->fetchColumn();
+$total_pages = ceil($total_appointments / $records_per_page);
+
+// Fetch appointments with pagination
+$appointmentQuery = $pdo->prepare("SELECT a.id, a.appointment_time, a.reason, c.name AS counselor_name, u.name AS student_name, a.status, a.notes 
                                  FROM appointments a 
                                  JOIN counselors c ON a.counselor_id = c.id
-                                 JOIN users u ON a.user_id = u.id");
+                                 JOIN users u ON a.user_id = u.id
+                                 ORDER BY a.appointment_time DESC
+                                 LIMIT :offset, :records_per_page");
+$appointmentQuery->bindParam(':offset', $offset, PDO::PARAM_INT);
+$appointmentQuery->bindParam(':records_per_page', $records_per_page, PDO::PARAM_INT);
+$appointmentQuery->execute();
 $appointments = $appointmentQuery->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Add the custom CSS file -->
+    <link rel="stylesheet" href="../assets/css/adashboard/adminappointments.css">
+</head>
+<body>
+
 <div class="container mt-4 px-4" style="margin-left: 220px; max-width: calc(100% - 220px);">
     <div class="row">
         <section class="col-12">
-            <div class="card shadow-sm">
+            <div class="card shadow-sm appointments-container">
+                <div class="card-header">
+                    <h2 class="card-title text-center mb-0">Manage Appointments</h2>
+                </div>
                 <div class="card-body">
-                    <h2 class="card-title text-center mb-4">Manage Appointments</h2>
                     
                     <!-- Success/Error Toast Message -->
                     <?php if (isset($_SESSION['message'])): ?>
-                        <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1050;">
+                        <div class="toast-container">
                             <div id="toastMessage" class="toast show align-items-center text-white bg-<?php echo $_SESSION['message_type']; ?> border-0" role="alert" aria-live="assertive" aria-atomic="true">
                                 <div class="d-flex">
                                     <div class="toast-body">
@@ -110,7 +135,7 @@ $appointments = $appointmentQuery->fetchAll(PDO::FETCH_ASSOC);
                     <!-- Use the current page URL as form action -->
                     <form method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>" id="appointmentsForm">
                         <div class="table-responsive">
-                            <table class="table table-striped">
+                            <table class="table table-striped appointments-table">
                                 <thead>
                                     <tr>
                                         <th><input type="checkbox" id="select_all" class="form-check-input"></th>
@@ -124,73 +149,107 @@ $appointments = $appointmentQuery->fetchAll(PDO::FETCH_ASSOC);
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach ($appointments as $appointment): ?>
-                                    <tr>
-                                        <td><input type="checkbox" name="appointments[]" value="<?php echo $appointment['id']; ?>" class="form-check-input appointment-checkbox"></td>
-                                        <td><?php echo htmlspecialchars($appointment['appointment_time']); ?></td>
-                                        <td><?php echo htmlspecialchars($appointment['student_name']); ?></td>
-                                        <td><?php echo htmlspecialchars($appointment['counselor_name']); ?></td>
-                                        <td><?php echo htmlspecialchars($appointment['reason']); ?></td>
-                                        <td>
-                                            <?php
-                                                $statusClass = '';
-                                                if ($appointment['status'] == 'accepted') {
-                                                    $statusClass = 'text-success';
-                                                } elseif ($appointment['status'] == 'rejected') {
-                                                    $statusClass = 'text-danger';
-                                                } elseif ($appointment['status'] == 'pending') {
-                                                    $statusClass = 'text-warning';
-                                                }
-                                            ?>
-                                            <span class="<?php echo $statusClass; ?>">
-                                                <?php echo htmlspecialchars($appointment['status']); ?>
-                                            </span>
-                                        </td>
-                                        <td><?php echo htmlspecialchars($appointment['notes']); ?></td>
-                                        <td>
-                                            <!-- Accept Button: Only show if the status is pending -->
-                                            <?php if ($appointment['status'] == 'pending'): ?>
-                                                <a href="?update_appointment_id=<?php echo $appointment['id']; ?>&status=accepted" class="btn btn-success btn-sm">Accept</a>
-                                            <?php endif; ?>
+                                    <?php if (count($appointments) > 0): ?>
+                                        <?php foreach ($appointments as $appointment): ?>
+                                        <tr>
+                                            <td><input type="checkbox" name="appointments[]" value="<?php echo $appointment['id']; ?>" class="form-check-input appointment-checkbox"></td>
+                                            <td><?php echo htmlspecialchars($appointment['appointment_time']); ?></td>
+                                            <td><?php echo htmlspecialchars($appointment['student_name']); ?></td>
+                                            <td><?php echo htmlspecialchars($appointment['counselor_name']); ?></td>
+                                            <td><?php echo htmlspecialchars($appointment['reason']); ?></td>
+                                            <td>
+                                                <?php
+                                                    $statusClass = '';
+                                                    if ($appointment['status'] == 'accepted') {
+                                                        $statusClass = 'status-accepted';
+                                                    } elseif ($appointment['status'] == 'rejected') {
+                                                        $statusClass = 'status-rejected';
+                                                    } elseif ($appointment['status'] == 'pending') {
+                                                        $statusClass = 'status-pending';
+                                                    }
+                                                ?>
+                                                <span class="<?php echo $statusClass; ?>">
+                                                    <?php echo htmlspecialchars($appointment['status']); ?>
+                                                </span>
+                                            </td>
+                                            <td><?php echo htmlspecialchars($appointment['notes']); ?></td>
+                                            <td>
+                                                <!-- Accept Button: Only show if the status is pending -->
+                                                <?php if ($appointment['status'] == 'pending'): ?>
+                                                    <a href="?update_appointment_id=<?php echo $appointment['id']; ?>&status=accepted" class="btn btn-success btn-sm btn-action">Accept</a>
+                                                <?php endif; ?>
 
-                                            <!-- Reject Button: Only show if the status is pending -->
-                                            <?php if ($appointment['status'] == 'pending'): ?>
-                                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#rejectModal<?php echo $appointment['id']; ?>">Reject</button>
-                                            <?php endif; ?>
-                                        </td>
-                                    </tr>
+                                                <!-- Reject Button: Only show if the status is pending -->
+                                                <?php if ($appointment['status'] == 'pending'): ?>
+                                                    <button type="button" class="btn btn-danger btn-sm btn-action" data-bs-toggle="modal" data-bs-target="#rejectModal<?php echo $appointment['id']; ?>">Reject</button>
+                                                <?php endif; ?>
+                                            </td>
+                                        </tr>
 
-                                    <!-- Modal for Rejection Note -->
-                                    <div class="modal fade" id="rejectModal<?php echo $appointment['id']; ?>" tabindex="-1" aria-labelledby="rejectModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="rejectModalLabel">Reject Appointment</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <form method="POST" action="?update_appointment_id=<?php echo $appointment['id']; ?>&status=rejected">
-                                                    <div class="modal-body">
-                                                        <div class="mb-3">
-                                                            <label for="rejection_note" class="form-label">Rejection Note</label>
-                                                            <textarea name="rejection_note" id="rejection_note" class="form-control" rows="3" required></textarea>
+                                        <!-- Modal for Rejection Note -->
+                                        <div class="modal fade" id="rejectModal<?php echo $appointment['id']; ?>" tabindex="-1" aria-labelledby="rejectModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="rejectModalLabel">Reject Appointment</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <form method="POST" action="?update_appointment_id=<?php echo $appointment['id']; ?>&status=rejected">
+                                                        <div class="modal-body">
+                                                            <div class="mb-3">
+                                                                <label for="rejection_note" class="form-label">Rejection Note</label>
+                                                                <textarea name="rejection_note" id="rejection_note" class="form-control" rows="3" required></textarea>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                        <button type="submit" class="btn btn-danger">Reject Appointment</button>
-                                                    </div>
-                                                </form>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                            <button type="submit" class="btn btn-danger">Reject Appointment</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <?php endforeach; ?>
+                                        <?php endforeach; ?>
+                                    <?php else: ?>
+                                        <tr>
+                                            <td colspan="8" class="text-center">No appointments found</td>
+                                        </tr>
+                                    <?php endif; ?>
                                 </tbody>
                             </table>
                         </div>
 
+                        <!-- Pagination -->
+                        <?php if ($total_pages > 1): ?>
+                        <nav aria-label="Appointments pagination">
+                            <ul class="pagination">
+                                <!-- Previous page link -->
+                                <li class="page-item <?php echo ($page <= 1) ? 'disabled' : ''; ?>">
+                                    <a class="page-link" href="<?php echo ($page <= 1) ? '#' : '?page='.($page-1); ?>" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                                
+                                <!-- Page numbers -->
+                                <?php for($i = 1; $i <= $total_pages; $i++): ?>
+                                    <li class="page-item <?php echo ($page == $i) ? 'active' : ''; ?>">
+                                        <a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                                    </li>
+                                <?php endfor; ?>
+                                
+                                <!-- Next page link -->
+                                <li class="page-item <?php echo ($page >= $total_pages) ? 'disabled' : ''; ?>">
+                                    <a class="page-link" href="<?php echo ($page >= $total_pages) ? '#' : '?page='.($page+1); ?>" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                        <?php endif; ?>
+
                         <!-- Trash Can Button (delete selected appointments) -->
-                        <button type="button" class="btn btn-danger" id="delete_selected_btn">
+                        <button type="button" class="btn delete-btn mt-3" id="delete_selected_btn">
                             <i class="bi bi-trash"></i> Delete Selected
                         </button>
                     </form>

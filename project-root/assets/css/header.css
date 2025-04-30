@@ -1,0 +1,153 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+nav {
+    background-color: #043826;
+}
+
+.navbar {
+    display: flex;
+    padding: 0 8rem;
+}
+
+.navbar-logo {
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.navbar-logo p {
+    transition: color 0.3s ease;
+}
+
+.navbar-logo p:hover {
+    color: #e0c36e;
+}
+
+.navbar-logo p {
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: #ffffff;
+    margin: 0; /* Remove default paragraph margin */
+}
+
+.navbar-links {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-links ul {
+    display: flex;
+    gap: 2rem; /* space between the links */
+    list-style: none; /* remove bullets */
+    padding: 0; /* remove default padding */
+    margin: 0; /* remove default margin */
+    align-items: center; /* vertically center links */
+}
+
+.navbar-links li a {
+    text-decoration: none;
+    color: white;
+    font-weight: 400;
+    font-size: 1rem;
+    padding: 0.5rem 0.5rem; /* Add padding around links */
+}
+
+.navbar-links li a:hover {
+    color: #e0c36e;
+    border-bottom: 2px solid #e0c36e; 
+}
+
+header {
+    padding: 1rem 0; 
+    background-color: #043826;
+}
+
+/* burger */
+
+.burger {
+    display: none;
+    cursor: pointer;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.burger div {
+    width: 25px;
+    height: 3px;
+    background-color: white;
+    transition: all 0.3s ease;
+    transform-origin: 1px;
+}
+
+.burger.toggle .line1 {
+    transform: rotate(-45deg) translate(-5px, 6px);
+}
+
+.burger.toggle .line2 {
+    opacity: 0;
+}
+
+.burger.toggle .line3 {
+    transform: rotate(45deg) translate(-5px, -6px);
+}
+
+
+
+
+/* responsive */
+@media (max-width: 845px) {
+    .navbar-links {
+        display: none; 
+    }
+    
+    .burger {
+        display: flex;
+    }
+
+    .navbar-links.active {
+        display: flex;
+    }
+}
+
+
+@media (max-width: 768px) {
+
+    .navbar {
+        padding: 0 2rem;
+    }
+
+    .navbar-links {
+        display: none;
+        flex-direction: column;
+        background-color: #043826;
+        position: absolute;
+        top: 7vh;  /* Adjust this value as needed */
+        height: 25vh;
+        right: 0;
+        width: 100%;
+        text-align: center;
+    }
+
+    .navbar-links ul {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .burger {
+        display: flex;
+    }
+
+    .navbar-links.active {
+        display: flex;
+    }
+}
+

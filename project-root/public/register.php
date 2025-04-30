@@ -7,7 +7,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Get form data
     $name = $_POST['name'];
     $email = $_POST['email'];
-    $phone_number = $_POST['phone_number'];
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm_password'];
 
@@ -25,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
         // Insert user data into the database using PDO
-        $sql = "INSERT INTO users (name, email, phone_number, password) VALUES (:name, :email, :phone_number, :password)";
+        $sql = "INSERT INTO users (name, email, password) VALUES (:name, :email, :password)";
         
         try {
             // Get the PDO database connection
@@ -37,7 +36,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Bind parameters to the query
             $stmt->bindParam(':name', $name, PDO::PARAM_STR);
             $stmt->bindParam(':email', $email, PDO::PARAM_STR);
-            $stmt->bindParam(':phone_number', $phone_number, PDO::PARAM_STR);
             $stmt->bindParam(':password', $hashed_password, PDO::PARAM_STR);
 
             // Execute the statement
@@ -62,70 +60,83 @@ $conn = null;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register - SafeSupport</title>
-    
-    <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../assets/css/register.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
-<body class="bg-light"> <!-- Light Beige/Wheat background for the page -->
-
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #c1703d;">
-        <div class="container">
-            <a class="navbar-brand" href="../public/index.php">SafeSupport</a>
+<body class="bg-light">
+    <div class="loading-spinner">
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
         </div>
-    </nav>
+    </div>
+    <div class="container min-vh-100 d-flex align-items-center justify-content-center">
+        <div class="card shadow-sm" style="width: 700px; border-color: #e3b766;">
+            <div class="row g-0">
+                <div class="col-md-6 d-flex align-items-center justify-content-center">
+                    <img src="../images/login.png" alt="Register Image" class="img-fluid p-3" style="max-height: 300px; object-fit: contain;">
+                </div>
+                <div class="col-md-6">
+                    <div class="card-body p-3">
+                        <a href="index.php" class="text-decoration-none position-absolute" style="left: 15px; top: 15px;">
+                            <i class="fas fa-arrow-left" style="color: #e3b766; font-size: 20px;"></i>
+                        </a>
+                        <h2 class="text-center mb-3" style="color: #e3b766; font-size: 1.5rem;">Create Account</h2>
+                        
+                        <?php if (isset($error)): ?>
+                            <div class="alert alert-danger py-2 mb-2 small"><?php echo $error; ?></div>
+                        <?php elseif (isset($success)): ?>
+                            <div class="alert alert-success py-2 mb-2 small"><?php echo $success; ?></div>
+                        <?php endif; ?>
+                        
+                        <form action="register.php" method="POST">
+                            <div class="mb-2">
+                                <label for="name" class="form-label small mb-1" style="color: #e3b766;">Name</label>
+                                <input type="text" id="name" name="name" class="form-control form-control-sm border-2" required 
+                                       style="border-color: #e3b766;">
+                            </div>
+                            
+                            <div class="mb-2">
+                                <label for="email" class="form-label small mb-1" style="color: #e3b766;">Email</label>
+                                <input type="email" id="email" name="email" class="form-control form-control-sm border-2" required 
+                                       style="border-color: #e3b766;">
+                            </div>
+                            
+                            <div class="mb-2">
+                                <label for="password" class="form-label small mb-1" style="color: #e3b766;">Password</label>
+                                <input type="password" id="password" name="password" class="form-control form-control-sm border-2" required
+                                       style="border-color: #e3b766;"
+                                       pattern="^(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$" 
+                                       title="Password must be at least 8 characters long, contain at least one uppercase letter, one number, and one symbol.">
+                            </div>
 
-    <!-- Register Form -->
-    <div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
-        <div class="card shadow-lg p-4" style="width: 400px;">
-            <h2 class="text-center text-dark">Create Your Account</h2>
-            
-            <?php if (isset($error)): ?>
-                <div class="alert alert-danger mt-3"><?php echo $error; ?></div>
-            <?php elseif (isset($success)): ?>
-                <div class="alert alert-success mt-3"><?php echo $success; ?></div>
-            <?php endif; ?>
-            
-            <form action="register.php" method="POST">
-                <div class="mb-3">
-                    <label for="name" class="form-label">Name</label>
-                    <input type="text" id="name" name="name" class="form-control" required>
-                </div>
-                
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="email" id="email" name="email" class="form-control" required>
-                </div>
+                            <div class="mb-3">
+                                <label for="confirm_password" class="form-label small mb-1" style="color: #e3b766;">Confirm Password</label>
+                                <input type="password" id="confirm_password" name="confirm_password" class="form-control form-control-sm border-2" required 
+                                       style="border-color: #e3b766;">
+                            </div>
 
-                <div class="mb-3">
-                    <label for="phone_number" class="form-label">Phone Number</label>
-                    <input type="text" id="phone_number" name="phone_number" class="form-control" required>
-                </div>
-                
-                <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
-                    <input type="password" id="password" name="password" class="form-control" required
-                        pattern="^(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$" 
-                        title="Password must be at least 8 characters long, contain at least one uppercase letter, one number, and one symbol.">
-                </div>
+                            <button type="submit" class="btn btn-sm w-100 text-white" 
+                                    style="background-color: #e3b766; border: none; transition: transform 0.2s;"
+                                    onmouseover="this.style.transform='scale(1.05)'" 
+                                    onmouseout="this.style.transform='scale(1)'">Register</button>
 
-                <div class="mb-3">
-                    <label for="confirm_password" class="form-label">Confirm Password</label>
-                    <input type="password" id="confirm_password" name="confirm_password" class="form-control" required>
+                            <div class="text-center mt-2">
+                                <small>Already have an account? 
+                                    <a href="../public/login.php" class="text-decoration-none" 
+                                       style="color: #e3b766; transition: transform 0.2s;"
+                                       onmouseover="this.style.transform='scale(1.05)'" 
+                                       onmouseout="this.style.transform='scale(1)'">Login here</a>
+                                </small>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-
-                <div class="text-center">
-                    <button type="submit" class="btn btn-primary w-100" style="background-color: #c1703d; border-color: #c1703d;">Register</button>
-                </div>
-
-                <div class="text-center mt-3">
-                    <p>Already have an account? <a href="../public/login.php" class="text-decoration-none" style="color: #c1703d;">Login here</a></p>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
 
-    <!-- Bootstrap 5 JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/register.js"></script>
 </body>
 </html>

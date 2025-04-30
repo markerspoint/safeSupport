@@ -61,7 +61,7 @@ $appointments = $appointmentQuery->fetchAll(PDO::FETCH_ASSOC);
 <div class="container mt-4 px-4" style="margin-left: 220px; max-width: calc(100% - 220px);">
     <div class="row gx-4 mt-4">
         <!-- Appointment Booking -->
-        <section class="col-12 col-md-6 col-lg-4 mb-4 mb-md-0">
+        <section class="col-12 col-md-6 col-lg-3 mb-4 mb-md-0">
             <div class="card shadow-sm" style="height: 100%;">
                 <div class="card-body">
                     <h2 class="card-title text-center mb-4">Book an Appointment</h2>
@@ -78,8 +78,45 @@ $appointments = $appointmentQuery->fetchAll(PDO::FETCH_ASSOC);
                         </div>
                         <div class="mb-3">
                             <label for="appointment_time" class="form-label">Choose Date and Time</label>
-                            <input type="datetime-local" id="appointment_time" name="appointment_time" class="form-control" required>
+                            <input type="text" id="appointment_time" name="appointment_time" class="form-control" required placeholder="Select date and time">
                         </div>
+                        <!-- Add Flatpickr CSS and JS -->
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+                        <style>
+                            .flatpickr-calendar {
+                                font-size: 14px;
+                                width: 280px;
+                                position: fixed !important;
+                                top: 50% !important;
+                                left: 50% !important;
+                                transform: translate(-50%, -50%) !important;
+                                z-index: 9999 !important;
+                            }
+                            .flatpickr-current-month {
+                                font-size: 14px;
+                            }
+                            .flatpickr-day {
+                                height: 32px;
+                                line-height: 32px;
+                            }
+                        </style>
+                        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+                        <script>
+                            flatpickr("#appointment_time", {
+                                enableTime: true,
+                                dateFormat: "Y-m-d H:i",
+                                minDate: "today",
+                                minTime: "09:00",
+                                maxTime: "17:00",
+                                disable: [
+                                    function(date) {
+                                        return (date.getDay() === 0 || date.getDay() === 6);
+                                    }
+                                ],
+                                time_24hr: true,
+                                static: true
+                            });
+                        </script>
                         <div class="mb-3">
                             <label for="reason" class="form-label">Reason for Appointment</label>
                             <textarea name="reason" id="reason" class="form-control" rows="3" required></textarea>
@@ -91,7 +128,7 @@ $appointments = $appointmentQuery->fetchAll(PDO::FETCH_ASSOC);
         </section>
 
         <!-- Your Appointments -->
-        <section class="col-12 col-md-6 col-lg-6">
+        <section class="col-12 col-md-6 col-lg-9">
             <div class="card shadow-sm" style="height: 100%;">
                 <div class="card-body">
                     <h2 class="card-title text-center mb-4">Your Appointments</h2>
