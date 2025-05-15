@@ -185,6 +185,29 @@ main.counselorDirectory-main {
     margin-left: var(--sidebar-collapsed-width);
 }
 
+/* for counselor directory */
+main.studentMessages-main {
+    margin-left: var(--sidebar-expanded-width);
+    transition: margin-left 0.3s ease;
+    padding: 24px;
+}
+
+#sidebar.expand ~ main.studentMessages-main {
+    margin-left: var(--sidebar-collapsed-width);
+}
+
+
+/* student profile */
+main.studentprofile-main {
+    margin-left: var(--sidebar-expanded-width);
+    transition: margin-left 0.3s ease;
+    padding: 24px;
+}
+
+#sidebar.expand ~ main.studentprofile-main {
+    margin-left: var(--sidebar-collapsed-width);
+}
+
 
 /* Responsive for small screens */
 @media (max-width: 768px) {

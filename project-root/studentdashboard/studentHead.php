@@ -7,7 +7,7 @@
         </button>
 
         <div class="sidebar-logo">
-            <a href="#">Student Dashboard</a>
+            <a href="#">Dashboard</a>
         </div>
     </div>
 
@@ -24,7 +24,7 @@
         </li>
 
         <li class="sidebar-item">
-            <a href="../studentdashboard/studentAppointment.php" class="sidebar-link">
+            <a href="../studentdashboard/studentMessages.php" class="sidebar-link">
             <i class="lni lni-message-3-text"></i>
                 <span>Messages</span>
             </a>
@@ -51,7 +51,7 @@
     <div class="sidebar-bottom">
         <ul class="sidebar-nav">
             <li class="sidebar-item">
-                <a href="../admindashboard/adminProfile.php" class="sidebar-link">
+                <a href="../sessions/profile.php" class="sidebar-link">
                     <i class="lni lni-user-4"></i>
                     <span>Profile</span>
                 </a>

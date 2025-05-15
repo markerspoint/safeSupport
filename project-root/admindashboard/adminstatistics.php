@@ -174,8 +174,8 @@ window.addEventListener('pageshow', function (event) {
         <?php include('../admindashboard/adminHeader.php'); ?>
 
         <main class="adminstatistics-main">
-            <div class="container mt-2 px-4">
-                <h1 style="font-weight: bold; margin-left: 2rem;">
+            <div class="container">
+                <h1 style="font-weight: bold; margin-left: -2rem;">
                     Dash<span style="color: #e3b766;">board</span>
                 </h1>
                 <?php if (isset($error)): ?>

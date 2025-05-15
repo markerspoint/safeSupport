@@ -104,12 +104,16 @@ $total_appointments = $total_query->fetchColumn();
 $total_pages = ceil($total_appointments / $records_per_page);
 
 // Fetch appointments with pagination
-$appointmentQuery = $pdo->prepare("SELECT a.id, a.appointment_time, a.reason, c.name AS counselor_name, u.name AS student_name, a.status 
-                                 FROM appointments a 
-                                 JOIN counselors c ON a.counselor_id = c.id
-                                 JOIN users u ON a.user_id = u.id
-                                 ORDER BY a.appointment_time DESC
-                                 LIMIT :offset, :records_per_page");
+$appointmentQuery = $pdo->prepare("SELECT a.id, a.appointment_time, a.reason, 
+    counselor.name AS counselor_name, 
+    student.name AS student_name, 
+    a.status 
+    FROM appointments a 
+    JOIN users student ON a.user_id = student.id 
+    JOIN users counselor ON a.counselor_id = counselor.id 
+    ORDER BY a.appointment_time DESC 
+    LIMIT :offset, :records_per_page");
+
 $appointmentQuery->bindParam(':offset', $offset, PDO::PARAM_INT);
 $appointmentQuery->bindParam(':records_per_page', $records_per_page, PDO::PARAM_INT);
 $appointmentQuery->execute();
@@ -283,8 +287,8 @@ $appointments = $appointmentQuery->fetchAll(PDO::FETCH_ASSOC);
 
                                     <div class="d-flex justify-content-between align-items-center mt-3">
                                         <!-- Trash Can Button (delete selected appointments) -->
-                                        <button type="button" class="btn delete-btn" id="delete_selected_btn">
-                                            <i class="bi bi-trash"></i> Delete Selected
+                                        <button type="button" class="btn delete-btn" id="delete_selected_btn" style="color: #fff;">
+                                            <i class="bi bi-trash" style="color: #fff;"></i> Delete Selected
                                         </button>
 
                                         <!-- Pagination -->

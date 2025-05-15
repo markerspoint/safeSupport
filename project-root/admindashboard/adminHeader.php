@@ -30,21 +30,21 @@
         </li>
 
         <li class="sidebar-item">
-            <a href="#" class="sidebar-link">
+            <a href="../admindashboard/adminMessages.php" class="sidebar-link">
             <i class="lni lni-message-3-text"></i>
                 <span>Messages</span>
             </a>
         </li>
 
         <li class="sidebar-item">
-            <a href="#" class="sidebar-link">
+            <a href="../admindashboard/adminMessages.php" class="sidebar-link">
             <i class="lni lni-megaphone-1"></i>
                 <span>Announcements</span>
             </a>
         </li>
 
         <li class="sidebar-item">
-            <a href="#" class="sidebar-link">
+            <a href="../admindashboard/adminMessages.php" class="sidebar-link">
                 <i class="lni lni-hierarchy-1"></i>
                 <span>Counselor Directory</span>
             </a>
@@ -58,7 +58,7 @@
         </li>
 
         <li class="sidebar-item">
-            <a href="#" class="sidebar-link">
+            <a href="../admindashboard/adminMessages.php" class="sidebar-link">
                 <i class="lni lni-plug-1"></i>
                 <span>Status</span>
             </a>

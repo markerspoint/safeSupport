@@ -1,8 +1,12 @@
 <?php
-// filepath: c:\safesupport\project-root\admindashboard\adminProfile.php
 
 // Start the session
 session_start();
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: ../public/login.php"); // Adjust path if needed
+    exit();
+}
 
 // Prevent browser from caching
 header("Cache-Control: no-cache, no-store, must-revalidate");
@@ -97,6 +101,16 @@ if (isset($_POST['delete_profile'])) {
 
 <!-- links of the adminheader -->
 <?php include('../admindashboard/adminHead.php'); ?>
+
+<script>
+// Reload page if it's loaded from back/forward cache (bfcache)
+window.addEventListener('pageshow', function (event) {
+    if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+        // Page was restored from bfcache or navigated via back button
+        window.location.reload();
+    }
+});
+</script>
 
 <body>
     <div class="dashboard-wrapper">

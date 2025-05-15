@@ -184,6 +184,17 @@ main.adminResourceLibrary-main {
     margin-left: var(--sidebar-collapsed-width);
 }
 
+/* for admin messages */
+main.adminMessages-main {
+    margin-left: var(--sidebar-expanded-width);
+    transition: margin-left 0.3s ease;
+    padding: 24px;
+}
+
+#sidebar.expand ~ main.adminMessages-main {
+    margin-left: var(--sidebar-collapsed-width);
+}
+
 /* for admin profile */
 main.adminProfile-main {
     margin-left: var(--sidebar-expanded-width);

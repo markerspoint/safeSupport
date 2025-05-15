@@ -5,7 +5,7 @@ require_once('../includes/db.php');
 // Check if user is already logged in
 if (isset($_SESSION['user_id'])) {
     // Redirect based on role
-    header("Location: " . ($_SESSION['role'] === 'counselor' ? '../admindashboard/adminstatistics.php' : '../studentdashboard/indexdashboard.php'));
+    header("Location: " . ($_SESSION['role'] === 'counselor' ? '../admindashboard/adminstatistics.php' : '../studentdashboard/studentAppointment.php'));
     exit();
 } 
 // Check for remember me cookies
@@ -24,7 +24,7 @@ elseif (!empty($_COOKIE['user_email']) && !empty($_COOKIE['user_password'])) {
         $_SESSION['role'] = $user['role'];
 
         // Redirect based on role
-        header("Location: " . ($user['role'] === 'counselor' ? '../admindashboard/adminstatistics.php' : '../studentdashboard/indexdashboard.php'));
+        header("Location: " . ($user['role'] === 'counselor' ? '../admindashboard/adminstatistics.php' : '../studentdashboard/studentAppointment.php'));
         exit();
     } else {
         // Clear invalid cookies

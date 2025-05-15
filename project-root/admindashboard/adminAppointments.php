@@ -2,6 +2,17 @@
 session_start();
 include('../includes/db.php');
 
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: ../public/login.php"); // Adjust path if needed
+    exit();
+}
+
+// Prevent browser from caching
+header("Cache-Control: no-cache, no-store, must-revalidate");
+header("Pragma: no-cache");
+header("Expires: 0");
+
 // Handle appointment status updates
 if (isset($_GET['update_appointment_id']) && isset($_GET['status'])) {
     $appointment_id = $_GET['update_appointment_id'];
@@ -131,6 +142,16 @@ $appointments = $appointmentQuery->fetchAll(PDO::FETCH_ASSOC);
 <!-- links of the adminheader -->
 <?php include('../admindashboard/adminHead.php'); ?>
 
+
+<script>
+// Reload page if it's loaded from back/forward cache (bfcache)
+window.addEventListener('pageshow', function (event) {
+    if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+        // Page was restored from bfcache or navigated via back button
+        window.location.reload();
+    }
+});
+</script>
 
 
 <body>
@@ -287,8 +308,8 @@ $appointments = $appointmentQuery->fetchAll(PDO::FETCH_ASSOC);
 
                                     <div class="d-flex justify-content-between align-items-center mt-3">
                                         <!-- Trash Can Button (delete selected appointments) -->
-                                        <button type="button" class="btn delete-btn" id="delete_selected_btn">
-                                            <i class="bi bi-trash"></i> Delete Selected
+                                        <button type="button" class="btn delete-btn" id="delete_selected_btn" style="color: #fff;">
+                                            <i class="bi bi-trash" style="color: #fff;"></i> Delete Selected
                                         </button>
 
                                         <!-- Pagination -->

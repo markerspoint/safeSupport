@@ -2,6 +2,16 @@
 session_start();
 require_once('../includes/db.php');
 
+if (!isset($_SESSION['user_id'])) {
+    header("Location: ../public/login.php"); // Adjust path if needed
+    exit();
+}
+
+// Prevent browser from caching
+header("Cache-Control: no-cache, no-store, must-revalidate");
+header("Pragma: no-cache");
+header("Expires: 0");
+
 // Handle form submission to add new resource
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $title = $_POST['title'];
@@ -38,6 +48,16 @@ $resources = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </head>
 
 <?php include('../admindashboard/adminHead.php'); ?>
+
+<script>
+// Reload page if it's loaded from back/forward cache (bfcache)
+window.addEventListener('pageshow', function (event) {
+    if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+        // Page was restored from bfcache or navigated via back button
+        window.location.reload();
+    }
+});
+</script>
 <body>
     <div class="dashboard-wrapper">
     <?php include('../admindashboard/adminHeader.php'); ?>

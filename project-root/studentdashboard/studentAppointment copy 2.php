@@ -192,13 +192,7 @@ $appointmentCounts = $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
             <div class="col-md-6">
                 <div class="card shadow-sm h-100">
                     <div class="card-body">
-                    <h2 class="card-title text-center mb-3">Appointment Calendar</h2>
-                        <!-- Legend -->
-                        <div class="mb-3 text-center">
-                            <span class="badge rounded-pill" style="background-color: green;">No Appointments</span>
-                            <span class="badge rounded-pill" style="background-color: yellow; color: black;">1–2 Appointments</span>
-                            <span class="badge rounded-pill" style="background-color: red;">3 or More Appointments</span>
-                        </div>
+                        <h2 class="card-title text-center mb-4">Appointment Calendar</h2>
                         <div id="calendar"></div>
                     </div>
                 </div>
@@ -282,9 +276,14 @@ $appointmentCounts = $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
+    <!-- FullCalendar CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet" />
+
+    <!-- FullCalendar JS -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
 
     <!-- Your custom calendar initialization script -->
-    <script src="../assets/js/studentAppointment.js" defer></script>
+    <script src="../assets/js/studentAppointment.js"></script>
 
     <script>
         flatpickr("#appointment_time", {
@@ -318,9 +317,6 @@ $appointmentCounts = $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
     // appointmentCounts: { '2025-05-15': 4, '2025-05-16': 2, ... }
     window.appointmentCounts = <?= json_encode($countsByDate); ?>;
     </script>
-
-
-
 
 </body>
 </html>
