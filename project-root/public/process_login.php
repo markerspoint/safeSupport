@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             // Determine redirect based on role
             if ($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'counselor') {
-                header("Location: ../admindashboard/adminIndex.php");
+                header("Location: ../admindashboard/adminstatistics.php");
             } else {
                 header("Location: ../studentdashboard/indexdashboard.php");
             }

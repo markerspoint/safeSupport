@@ -66,22 +66,22 @@ $conn = null;
 </head>
 <body class="bg-light">
     <div class="loading-spinner">
-        <div class="spinner-border" role="status">
+        <div class="spinner-border" role="status" style="color: #0b6043 !important;">
             <span class="visually-hidden">Loading...</span>
         </div>
     </div>
     <div class="container min-vh-100 d-flex align-items-center justify-content-center">
-        <div class="card shadow-sm" style="width: 700px; border-color: #e3b766;">
+        <div class="card shadow-sm" style="width: 60vw; max-width: 700px; border-color: #cecece;">
             <div class="row g-0">
                 <div class="col-md-6 d-flex align-items-center justify-content-center">
                     <img src="../images/login.png" alt="Register Image" class="img-fluid p-3" style="max-height: 300px; object-fit: contain;">
                 </div>
                 <div class="col-md-6">
-                    <div class="card-body p-3">
+                    <div class="card-body" style="padding: 2rem 1.5rem;">
                         <a href="index.php" class="text-decoration-none position-absolute" style="left: 15px; top: 15px;">
-                            <i class="fas fa-arrow-left" style="color: #e3b766; font-size: 20px;"></i>
+                            <i class="fas fa-arrow-left" style="color: #0b6043; font-size: 1.25rem;"></i>
                         </a>
-                        <h2 class="text-center mb-3" style="color: #e3b766; font-size: 1.5rem;">Create Account</h2>
+                        <h2 class="text-center mb-3" style="color: #0b6043; font-size: clamp(1.5rem, 5vw, 2rem);">Create Account</h2>
                         
                         <?php if (isset($error)): ?>
                             <div class="alert alert-danger py-2 mb-2 small"><?php echo $error; ?></div>
@@ -91,42 +91,42 @@ $conn = null;
                         
                         <form action="register.php" method="POST">
                             <div class="mb-2">
-                                <label for="name" class="form-label small mb-1" style="color: #e3b766;">Name</label>
+                                <label for="name" class="form-label small mb-1" style="color: #0b6043;">Name</label>
                                 <input type="text" id="name" name="name" class="form-control form-control-sm border-2" required 
-                                       style="border-color: #e3b766;">
+                                       style="border-color: #0b6043;">
                             </div>
                             
                             <div class="mb-2">
-                                <label for="email" class="form-label small mb-1" style="color: #e3b766;">Email</label>
+                                <label for="email" class="form-label small mb-1" style="color: #0b6043;">Email</label>
                                 <input type="email" id="email" name="email" class="form-control form-control-sm border-2" required 
-                                       style="border-color: #e3b766;">
+                                       style="border-color: #0b6043;">
                             </div>
                             
                             <div class="mb-2">
-                                <label for="password" class="form-label small mb-1" style="color: #e3b766;">Password</label>
+                                <label for="password" class="form-label small mb-1" style="color: #0b6043;">Password</label>
                                 <input type="password" id="password" name="password" class="form-control form-control-sm border-2" required
-                                       style="border-color: #e3b766;"
+                                       style="border-color: #0b6043;"
                                        pattern="^(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$" 
                                        title="Password must be at least 8 characters long, contain at least one uppercase letter, one number, and one symbol.">
                             </div>
 
                             <div class="mb-3">
-                                <label for="confirm_password" class="form-label small mb-1" style="color: #e3b766;">Confirm Password</label>
+                                <label for="confirm_password" class="form-label small mb-1" style="color: #0b6043;">Confirm Password</label>
                                 <input type="password" id="confirm_password" name="confirm_password" class="form-control form-control-sm border-2" required 
-                                       style="border-color: #e3b766;">
+                                       style="border-color: #0b6043;">
                             </div>
 
                             <button type="submit" class="btn btn-sm w-100 text-white" 
-                                    style="background-color: #e3b766; border: none; transition: transform 0.2s;"
-                                    onmouseover="this.style.transform='scale(1.05)'" 
-                                    onmouseout="this.style.transform='scale(1)'">Register</button>
+                                    style="background-color: #0b6043; border: none; transition: transform 0.2s; background-color: #0b6043;"
+                                    onmouseover="this.style.transform='scale(1.005)'; this.style.backgroundColor='#094d36'" 
+                                    onmouseout="this.style.transform='scale(1)'; this.style.backgroundColor='#0b6043'">Register</button>
 
                             <div class="text-center mt-2">
                                 <small>Already have an account? 
                                     <a href="../public/login.php" class="text-decoration-none" 
-                                       style="color: #e3b766; transition: transform 0.2s;"
-                                       onmouseover="this.style.transform='scale(1.05)'" 
-                                       onmouseout="this.style.transform='scale(1)'">Login here</a>
+                                       style="color: #0b6043; transition: transform 0.2s;"
+                                       onmouseover="this.style.transform='scale(1.05)'; this.style.color='#094d36'" 
+                                       onmouseout="this.style.transform='scale(1)'; this.style.color='#0b6043'">Login here</a>
                                 </small>
                             </div>
                         </form>

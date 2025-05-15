@@ -1,56 +1,84 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
+<aside id="sidebar">
+    <div class="d-flex">
+        <button id="toggle-btn">
+            <i class="lni lni-dashboard-square-1"></i>
+        </button>
 
-    <!-- Add Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Add Bootstrap icon -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
-</head>
-<body>
-
-<!-- Header -->
-<header class="bg-dark text-white p-2 position-sticky top-0 w-100" style="z-index: 1050;">
-    <div class="container-fluid d-flex justify-content-between align-items-center ps-0">
-        <!-- Logo -->
-        <a class="navbar-brand fw-semibold" href="../public/index.php" style="font-size: 1rem;">
-            <span style="color: #e3b766; font-weight: bold; font-size: 1.1rem;">Safe</span>
-            <span class="text-white" style="font-weight: bold; font-size: 1.1rem;">Support</span>
-        </a>
+        <div class="sidebar-logo">
+            <a href="../public/index.php">SafeSupport</a>
+        </div>
     </div>
-</header>
 
-<!-- Sidebar -->
-<div class="d-flex">
-    <div class="p-3 text-dark d-flex flex-column position-fixed vh-100" style="width: 200px; background-color: #333333;">
-        <h5 class="text-white">Admin Menu</h5>
-        <nav class="nav flex-column">
-            <a class="nav-link text-white" href="../admindashboard/adminProfile.php" style="transition: background-color 0.3s ease;" onmouseover="this.style.backgroundColor='#e3b766'; this.style.color='white'" onmouseout="this.style.backgroundColor=''; this.style.color='white'">
-                <i class="bi bi-person-circle"></i> Profile
-            </a>
-            <a class="nav-link text-white" href="../admindashboard/adminAppointments.php" style="transition: background-color 0.3s ease;" onmouseover="this.style.backgroundColor='#e3b766'; this.style.color='white'" onmouseout="this.style.backgroundColor=''; this.style.color='white'">
-                <i class="bi bi-calendar-event"></i> Appointments
-            </a>
-            <a class="nav-link text-white" href="../dashbotory.php" style="transition: background-color 0.3s ease;" onmouseover="this.style.backgroundColor='#e3b766'; this.style.color='white'" onmouseout="this.style.backgroundColor=''; this.style.color='white'">
-                <i class="bi bi-people-fill"></i> Counselor Directory
-            </a>
-            <a class="nav-link text-white" href="../admindashboard/adminResourceLibrary.php" style="transition: background-color 0.3s ease;" onmouseover="this.style.backgroundColor='#e3b766'; this.style.color='white'" onmouseout="this.style.backgroundColor=''; this.style.color='white'">
-                <i class="bi bi-gear-fill"></i> Resources Library
-            </a>
-            <hr class="text-secondary">
-            <!-- Updated Logout Link -->
-            <a class="nav-link text-danger" href="../public/logout.php" style="transition: background-color 0.3s ease;" onmouseover="this.style.backgroundColor='#e3b766'; this.style.color='white'" onmouseout="this.style.backgroundColor=''; this.style.color='white'">
-                <i class="bi bi-box-arrow-right"></i> Logout
-            </a>
-        </nav>
+    <div class="sidebar-title">
+        <p>Statistics</p>
     </div>
-</div>
 
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <hr class="text-secondary">
 
-</body>
-</html>
+    <ul class="sidebar-nav">
+        <li class="sidebar-item">
+            <a href="../admindashboard/adminstatistics.php" class="sidebar-link">
+                <i class="lni lni-bar-chart-4"></i>
+                <span>Analytics</span>
+            </a>
+        </li>
+
+        <hr class="text-secondary">
+
+        <div class="sidebar-title"><p>Manage</p></div>
+        <hr class="text-secondary">
+
+        <li class="sidebar-item">
+            <a href="../admindashboard/adminAppointments.php" class="sidebar-link">
+                <i class="lni lni-briefcase-2"></i>
+                <span>Appointments</span>
+            </a>
+        </li>
+
+        <li class="sidebar-item">
+            <a href="#" class="sidebar-link">
+                <i class="lni lni-hierarchy-1"></i>
+                <span>Counselor Directory</span>
+            </a>
+        </li>
+
+        <li class="sidebar-item">
+            <a href="../admindashboard/adminResourceLibrary.php" class="sidebar-link">
+                <i class="lni lni-books-2"></i>
+                <span>Resource Library</span>
+            </a>
+        </li>
+
+        <hr class="text-secondary">
+
+        <div class="sidebar-title"><p>App Status</p></div>
+        <hr class="text-secondary">
+
+        <li class="sidebar-item">
+            <a href="#" class="sidebar-link">
+                <i class="lni lni-plug-1"></i>
+                <span>Status</span>
+            </a>
+        </li>
+
+        <hr class="text-secondary">
+
+        <div class="sidebar-title"><p>Account</p></div>
+        <hr class="text-secondary">
+
+        <li class="sidebar-item">
+            <a href="../admindashboard/adminProfile.php" class="sidebar-link">
+                <i class="lni lni-user-4"></i>
+                <span>Profile</span>
+            </a>
+        </li>
+
+        <li class="sidebar-item">
+            <a href="../public/logout.php" class="sidebar-link" style="color: red;">
+                <i class="lni lni-exit"></i>
+                <span>Logout</span>
+            </a>
+        </li>
+    </ul>
+</aside>
+

@@ -1,1 +1,0 @@
-<?php include('../admindashboard/adminProfile.php');?>

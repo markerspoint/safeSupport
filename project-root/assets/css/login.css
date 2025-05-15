@@ -1,5 +1,3 @@
-/* import bootstrap from node_modules */
-@import "../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 
 .loading-spinner {
     position: fixed;
@@ -15,5 +13,5 @@
 }
 
 .spinner-border {
-    color: #e3b766;
+    color: #0b6043 !important;
 }

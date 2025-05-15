@@ -5,7 +5,7 @@ require_once('../includes/db.php');
 // Check if user is already logged in
 if (isset($_SESSION['user_id'])) {
     // Redirect based on role
-    header("Location: " . ($_SESSION['role'] === 'counselor' ? '../admindashboard/adminIndex.php' : '../studentdashboard/indexdashboard.php'));
+    header("Location: " . ($_SESSION['role'] === 'counselor' ? '../admindashboard/adminstatistics.php' : '../studentdashboard/indexdashboard.php'));
     exit();
 } 
 // Check for remember me cookies
@@ -24,7 +24,7 @@ elseif (!empty($_COOKIE['user_email']) && !empty($_COOKIE['user_password'])) {
         $_SESSION['role'] = $user['role'];
 
         // Redirect based on role
-        header("Location: " . ($user['role'] === 'counselor' ? '../admindashboard/adminIndex.php' : '../dashboard/indexdashboard.php'));
+        header("Location: " . ($user['role'] === 'counselor' ? '../admindashboard/adminstatistics.php' : '../studentdashboard/indexdashboard.php'));
         exit();
     } else {
         // Clear invalid cookies
@@ -43,28 +43,27 @@ elseif (!empty($_COOKIE['user_email']) && !empty($_COOKIE['user_password'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - SafeSupport</title>
 
-    <!-- Bootstrap 5.3.0 CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <link href="../assets/css/login.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/login.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
 </head>
 <body class="bg-light">
     <div class="loading-spinner">
-        <div class="spinner-border" role="status">
+        <div class="spinner-border" role="status" style="color: #0b6043 !important;">
             <span class="visually-hidden">Loading...</span>
         </div>
     </div>
     <div class="container min-vh-100 d-flex align-items-center justify-content-center">
-        <div class="card shadow-sm" style="width: 700px; border-color: #e3b766;">
+        <div class="card shadow-sm" style="width: 700px; border-color: #cecece;">
             <div class="row g-0">
                 <div class="col-md-6">
                     <div class="card-body p-3">
                         <a href="index.php" class="text-decoration-none position-absolute" style="left: 15px; top: 15px;">
-                            <i class="fas fa-arrow-left" style="color: #e3b766; font-size: 20px;"></i>
+                            <i class="fas fa-arrow-left" style="color: #0b6043; font-size: 20px;"></i>
                         </a>
-                        <h2 class="text-center mb-3" style="color: #e3b766; font-size: 1.5rem;">Login to SafeSupport</h2>
+                        <h2 class="text-center mb-3" style="color: #0b6043; font-size: 1.5rem;">Login to SafeSupport</h2>
                         
                         <?php if (isset($_SESSION['error'])): ?>
                             <div class="alert alert-danger py-2 mb-2 small">
@@ -77,27 +76,27 @@ elseif (!empty($_COOKIE['user_email']) && !empty($_COOKIE['user_password'])) {
                         
                         <form action="process_login.php" method="POST">
                             <div class="mb-2">
-                                <label for="email" class="form-label small mb-1" style="color: #e3b766;">Email</label>
+                                <label for="email" class="form-label small mb-1" style="color: #0b6043;">Email</label>
                                 <input type="email" class="form-control form-control-sm border-2" id="email" name="email" required 
-                                       style="border-color: #e3b766;">
+                                       style="border-color: #0b6043;">
                             </div>
                             <div class="mb-2">
-                                <label for="password" class="form-label small mb-1" style="color: #e3b766;">Password</label>
+                                <label for="password" class="form-label small mb-1" style="color: #0b6043;">Password</label>
                                 <input type="password" class="form-control form-control-sm border-2" id="password" name="password" required
-                                       style="border-color: #e3b766;">
+                                       style="border-color: #0b6043;">
                             </div>
                             <div class="mb-3">
                                 <div class="form-check">
                                     <input type="checkbox" class="form-check-input" id="remember" name="remember"
-                                           style="border-color: #e3b766; background-color: #ffffff !important;"
-                                           onchange="this.style.backgroundColor = this.checked ? '#e3b766' : '#ffffff'">
+                                           style="border-color: #0b6043; background-color: #ffffff !important;"
+                                           onchange="this.style.backgroundColor = this.checked ? '#0b6043' : '#ffffff'">
                                     <label class="form-check-label small" for="remember">Remember me</label>
                                 </div>
                             </div>
                             <button type="submit" class="btn btn-sm w-100 text-white" 
-                                    style="background-color: #e3b766; border: none; transition: transform 0.2s;"
-                                    onmouseover="this.style.transform='scale(1.05)'" 
-                                    onmouseout="this.style.transform='scale(1)'">Login</button>
+                                    style="background-color: #0b6043; border: none; transition: transform 0.2s;"
+                                    onmouseover="this.style.transform='scale(1.005)'; this.style.backgroundColor='#094d36'" 
+                                    onmouseout="this.style.transform='scale(1)'; this.style.backgroundColor='#0b6043'">Login</button>
                         </form>
                         
                         <div class="text-center mt-2">
@@ -107,9 +106,9 @@ elseif (!empty($_COOKIE['user_email']) && !empty($_COOKIE['user_password'])) {
                                    onmouseover="this.style.transform='scale(1.05)'" 
                                    onmouseout="this.style.transform='scale(1)'">
                                    <span style="color: #333333;">Don't have an account?</span>
-                                   <span style="color: #e3b766;">Register</span>
+                                   <span style="color: #0b6043;">Register</span>
                                 </a>
-                                <a href="forgot_password.php" class="text-decoration-none" style="color: #e3b766;">
+                                <a href="forgot_password.php" class="text-decoration-none" style="color: #0b6043;">
                                     <span style="display: inline-block; transition: transform 0.2s;"
                                           onmouseover="this.style.transform='scale(1.05)'" 
                                           onmouseout="this.style.transform='scale(1)'">Forgot Password?</span>

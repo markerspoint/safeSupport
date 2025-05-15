@@ -1,51 +1,82 @@
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('Statistics Data:', statisticsData);
-    
-    const appointmentsCtx = document.getElementById('appointmentsChart');
-    const usersCtx = document.getElementById('usersChart');
-    
-    console.log('Chart contexts:', appointmentsCtx, usersCtx);
-    
-    // Appointments Chart
-    new Chart(appointmentsCtx.getContext('2d'), {
-        type: 'pie',
+document.addEventListener("DOMContentLoaded", function () {
+    // Line Chart: Appointments this Week
+    const appointmentsCtx = document.getElementById('appointmentsChart').getContext('2d');
+    const appointmentsChart = new Chart(appointmentsCtx, {
+        type: 'line',
         data: {
-            labels: ['Pending', 'Completed'],
+            labels: statisticsData.weekDays.map(date => {
+                // Format date as Mon, Tue, etc.
+                const options = { weekday: 'short' };
+                return new Date(date).toLocaleDateString('en-US', options);
+            }),
             datasets: [{
-                data: [statisticsData.pendingAppointments, statisticsData.completedAppointments],
-                backgroundColor: ['#ffd700', '#90EE90']
+                label: 'Appointments This Week',
+                data: statisticsData.weekCounts,
+                borderColor: '#3e95cd',
+                backgroundColor: 'rgba(62, 149, 205, 0.2)',
+                fill: true,
+                tension: 0.3,
+                pointBackgroundColor: '#3e95cd',
+                pointBorderColor: '#3e95cd',
             }]
         },
         options: {
             responsive: true,
             plugins: {
-                title: {
-                    display: true,
-                    text: 'Appointment Status Distribution'
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    stepSize: 1,
+                    title: {
+                        display: true,
+                        text: 'Bookings'
+                    }
                 }
             }
         }
     });
 
-    // Users Chart
-    new Chart(usersCtx.getContext('2d'), {
+    // Bar Chart: Booking Statuses
+    const usersCtx = document.getElementById('usersChart').getContext('2d');
+    const usersChart = new Chart(usersCtx, {
         type: 'bar',
         data: {
-            labels: ['Students', 'Counselors'],
+            labels: ['Pending', 'Accepted', 'Rejected'],
             datasets: [{
-                label: 'Number of Users',
-                data: [statisticsData.totalStudents, statisticsData.totalCounselors],
-                backgroundColor: ['#e3b766', '#4a90e2']
+                label: '',
+                data: [
+                    statisticsData.pendingAppointments,
+                    statisticsData.completedAppointments,
+                    statisticsData.rejectedAppointments
+                ],
+                backgroundColor: [
+                    '#f0ad4e', // yellow-orange for pending
+                    '#5cb85c', // green for accepted
+                    '#d9534f'  // red for rejected
+                ],
+                borderColor: '#ccc',
+                borderWidth: 1
             }]
         },
         options: {
             responsive: true,
+            indexAxis: 'y', // Make it horizontal if you want: 'y'
             plugins: {
-                title: {
-                    display: true,
-                    text: 'User Distribution'
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
                 }
             }
         }
     });
 });
+
+

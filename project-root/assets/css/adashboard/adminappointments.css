@@ -1,51 +1,97 @@
-/* Admin Appointments Styling with responsive units */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: #eaeffd !important;
+
+}
+
+.navbar {
+    background-color: #f8f9fa;
+    padding: 0 1.25rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 100%;
+    border-radius: 0.5rem; 
+    margin: 0 1.4rem;
+}
+
+.navbar h1 {
+    font-size: clamp(1rem, 5vw, 1.5rem);
+    padding: 0 1rem;
+}
 
 /* Main container styling */
 .appointments-container {
     background-color: #f8f9fa;
     border-radius: 0.5rem;
-    box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.1);
     padding: 1.25rem;
     margin-bottom: 1.875rem;
 }
 
 /* Table styling */
 .appointments-table {
+    display: flex;
+    flex-direction: column;
     width: 100%;
-    border-collapse: collapse;
+    font-size: 0.95rem;
 }
 
-.appointments-table th {
-    background-color: #043826;
-    color: white;
-    padding: 0.75rem 0.9375rem;
-    text-align: left;
-    font-weight: 600;
+.table-row {
+    display: flex;
+    flex-wrap: wrap;
 }
 
-.appointments-table td {
-    padding: 0.75rem 0.9375rem;
-    border-bottom: 0.0625rem solid #e0e0e0;
-}
-
-.appointments-table tr:hover {
+/* Apply hover effect to table rows, excluding the header */
+.appointments-table .table-row:not(.table-header):hover {
     background-color: #f1f1f1;
+    cursor: pointer;
 }
+
+.table-header {
+    font-weight: bold;
+    color: #fff;
+    background-color: #043826;
+    border-bottom: 2px solid #ddd;
+}
+
+.table-cell {
+    flex: 1;
+    padding: 8px;
+    text-align: left;
+}
+
+
+.table-cell:first-child {
+    flex: 0 0 50px; /* Checkbox column */
+}
+
+/* Removed the Notes column styling */
+.table-cell:last-child {
+    flex: 0 0 150px; /* Actions column */
+}
+
+/* .table-row:nth-child(even) { //rremoved!!! causing the stripe color
+    background-color: #f9f9f9;
+} */
+
 
 /* Status colors */
 .status-pending {
-    color: #ffc107;
-    font-weight: 500;
+    color: orange;
+    font-weight: bold;
 }
 
 .status-accepted {
-    color: #28a745;
-    font-weight: 500;
+    color: green;
+    font-weight: bold;
 }
 
 .status-rejected {
-    color: #dc3545;
-    font-weight: 500;
+    color: red;
+    font-weight: bold;
 }
 
 /* Action buttons */
@@ -59,6 +105,7 @@
     display: flex;
     justify-content: center;
     margin-top: 1.25rem;
+    margin-bottom: 0; /* Remove extra margin for alignment */
 }
 
 .pagination .page-item .page-link {
@@ -87,23 +134,24 @@
 
 /* Delete button styling */
 .delete-btn {
-    background-color: #dc3545;
+    background-color: #dc3545 !important;
     color: white;
     border: none;
     padding: 0.5rem 0.9375rem;
     border-radius: 0.25rem;
     cursor: pointer;
     transition: background-color 0.3s;
+    margin-right: 1rem; /* Add spacing if needed */
 }
 
 .delete-btn:hover {
-    background-color: #c82333;
+    background-color: #c82333 !important;
 }
 
 /* Checkbox styling */
-.form-check-input {
+/* .form-check-input {
     cursor: pointer;
-}
+} */
 
 /* Toast styling */
 .toast-container {
@@ -184,15 +232,160 @@
     }
 }
 
-/* Modal responsive adjustments */
-.modal-dialog {
-    max-width: 90%;
-    width: 30rem;
-    margin: 1.75rem auto;
+/* Modal styling */
+.modal-content {
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
 }
 
-@media (min-width: 36em) {
-    .modal-dialog {
-        max-width: 32rem;
+.modal-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.modal-title {
+    color: #495057;
+    font-weight: 600;
+}
+
+.modal-footer {
+    border-top: 1px solid #e9ecef;
+    background-color: #f8f9fa;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+textarea[name="rejection_reason"] {
+    resize: none;
+    border: 1px solid #ced4da;
+}
+
+textarea[name="rejection_reason"]:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Flexbox utility class */
+.d-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Card Styling */
+.card {
+    border-radius: 0.5rem;
+    padding: 1rem;
+    transition: transform 0.2s ease-in-out;
+}
+
+.card:hover {
+    transform: scale(1.005);
+}
+
+.card .card-title {
+    font-size: clamp(1rem, 5vw, 1.3rem);
+}
+
+/* Card Header (Icon + Title Alignment) */
+.card-header-content {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem; /* Add spacing between the icon and title */
+}
+
+/* Card Icon */
+.card i {
+    font-size: clamp(1rem, 5vw, 1.5rem); /* Adjust icon size dynamically */
+    color: inherit; /* Use the color defined in the card-specific styles */
+}
+
+/* Card Title */
+.card-title {
+    font-size: clamp(0.8rem, 2.5vw, 1.3rem); /* Adjust title size dynamically */
+    margin: 0;
+}
+
+.card .card-text {
+    font-size: clamp(0.8rem, 2.5vw, 1.3rem);
+    margin-left: 2rem;
+}
+
+/* Total Appointments Card */
+.card-total-appointments {
+    background-color: white !important; /* Default card background */
+    color: #333;
+    border-left: 8px solid #ff7f7f !important;
+}
+
+.card-total-appointments i {
+    padding: 0.5rem; /* Add padding around the icon */
+    color: #ff7f7f !important; /* Pastel pink for the icon */
+}
+
+/* Pending Appointments Card */
+.card-pending-appointments {
+    background-color: white !important; /* Default card background */
+    color: #333;
+    border-left: 8px solid #ffd700 !important;
+}
+
+.card-pending-appointments i {
+    padding: 0.5rem; 
+    color: #ffd700 !important; /* Pastel yellow for the icon */
+}
+
+/* Completed Appointments Card */
+.card-completed-appointments {
+    background-color: white !important;
+    color: #333;
+    border-left: 8px solid #32cd32 !important;
+}
+
+.card-completed-appointments i {
+    padding: 0.5rem; /* Add padding around the icon */
+    color: #32cd32 !important;
+}
+
+
+/* Responsive Typography */
+.card-title {
+    font-size: 1.25rem; /* 1.25rem for better scaling */
+}
+
+.card-text {
+    font-size: 1.5rem; /* 1.5rem for numbers */
+}
+
+
+
+/* Responsive Adjustments */
+@media (max-width: 850px) {
+
+    .card .card-body i {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .card-container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .card {
+        margin-bottom: 1rem;
+    }
+
+    .card-body i {
+        font-size: clamp(1.5rem, 5vw, 2.5rem); /* Adjust icon size for smaller screens */
+    }
+
+    .card .card-body i {
+        display: none;
     }
 }

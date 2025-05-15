@@ -1,6 +1,6 @@
 <?php include('../includes/header.php'); ?>
 
-<main style="background: #ffffff;">
+<main>
     
 
 <!-- Hero Section -->

@@ -151,50 +151,39 @@
     margin: 0;
 }
 
+
 /* 👇 Main content sync fix */
-main.adminstatistics-main {
+main.studentAppointment-main {
     margin-left: var(--sidebar-expanded-width);
     transition: margin-left 0.3s ease;
     padding: 24px;
 }
 
-#sidebar.expand ~ main.adminstatistics-main {
+#sidebar.expand ~ main.studentAppointment-main {
     margin-left: var(--sidebar-collapsed-width);
 }
 
-/* for appointments */
-main.adminAppointments-main {
+/* for resources library */
+main.resourcesLibrary-main {
     margin-left: var(--sidebar-expanded-width);
     transition: margin-left 0.3s ease;
     padding: 24px;
 }
 
-#sidebar.expand ~ main.adminAppointments-main {
+#sidebar.expand ~ main.resourcesLibrary-main {
     margin-left: var(--sidebar-collapsed-width);
 }
 
-/* for resource library */
-main.adminResourceLibrary-main {
+/* for counselor directory */
+main.counselorDirectory-main {
     margin-left: var(--sidebar-expanded-width);
     transition: margin-left 0.3s ease;
     padding: 24px;
 }
 
-#sidebar.expand ~ main.adminResourceLibrary-main {
+#sidebar.expand ~ main.counselorDirectory-main {
     margin-left: var(--sidebar-collapsed-width);
 }
-
-/* for admin profile */
-main.adminProfile-main {
-    margin-left: var(--sidebar-expanded-width);
-    transition: margin-left 0.3s ease;
-    padding: 24px;
-}
-
-#sidebar.expand ~ main.adminProfile-main {
-    margin-left: var(--sidebar-collapsed-width);
-}
-
 
 
 /* Responsive for small screens */
@@ -205,10 +194,10 @@ main.adminProfile-main {
     #sidebar:not(.expand) {
         width: var(--sidebar-expanded-width);
     }
-    main.adminstatistics-main {
+    main.studentAppointment-main {
         margin-left: var(--sidebar-collapsed-width);
     }
-    #sidebar:not(.expand) ~ main.adminstatistics-main {
+    #sidebar:not(.expand) ~ main.studentAppointment-main {
         margin-left: var(--sidebar-expanded-width);
     }
 }
